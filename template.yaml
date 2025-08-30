@@ -70,41 +70,45 @@ spec:
           minimum: 3000
           maximum: 9999
     - title: Repository Preview
-      description: 'Review how your repository will be created'
+      description: 'Review how your repository will be created based on your selections'
       required:
         - confirmCreation
       properties:
         repoPreview:
-          title: Repository Details Preview
+          title: Repository Details
           type: string
           description: |
-            **Repository Name:** `rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+            The repository will be created with the following structure:
             
-            **Full URL:** `https://github.com/bancorocks/rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+            🏗️ **Naming Pattern:** rocks.{domain}-{component_id}
+            📁 **Organization:** bancorocks
+            🌐 **Base URL:** https://github.com/bancorocks/
             
-            **Clone URL:** `git clone https://github.com/bancorocks/rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}.git`
+            ⚙️ **How it works:**
+            - Domain is extracted from the selected System
+            - Component name becomes part of the repository name
+            - Final format: rocks.{extracted-domain}-{your-component-name}
             
-            **Package Name:** `rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+            📝 **Examples:**
+            - System: "system:default/accounts" + Component: "user-api" = rocks.accounts-user-api
+            - System: "system:payments" + Component: "transaction-service" = rocks.payments-transaction-service
+            - System: "system:default/cards" + Component: "creditcard-api" = rocks.cards-creditcard-api
             
-            **Component ID:** `${{ parameters.component_id }}`
-            
-            **Domain:** `${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}`
-            
-            **Owner:** `${{ parameters.owner }}`
-            
-            **System:** `${{ parameters.system }}`
-            
-            **Lifecycle:** `${{ parameters.lifecycle }}`
-            
-            **Port:** `${{ parameters.port }}`
+            🔧 **What will be created:**
+            - GitHub repository with standardized name
+            - README.md with component documentation
+            - package.json with proper naming
+            - Swagger/OpenAPI documentation
+            - Basic Express.js structure
+            - Backstage catalog-info.yaml
           ui:widget: textarea
           ui:options:
-            rows: 12
+            rows: 15
           ui:readonly: true
         confirmCreation:
           title: Confirm Repository Creation
           type: boolean
-          description: 'I confirm that the repository details above are correct and I want to proceed with creation'
+          description: 'I have reviewed the naming pattern above and want to proceed with repository creation'
           default: false
   steps:
     - id: extract-domain
