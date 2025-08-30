@@ -24,6 +24,7 @@ spec:
         - system
         - lifecycle
       properties:
+        component_id:
           title: Component Name
           type: string
           description: Name of the component (will be used in repository name)
@@ -66,11 +67,12 @@ spec:
           type: number
           description: Port to run the API on
           default: 3000
-        component_id:
           minimum: 3000
           maximum: 9999
     - title: Repository Preview
       description: 'Review how your repository will be created'
+      required:
+        - confirmCreation
       properties:
         repoPreview:
           title: Repository Details Preview
@@ -120,7 +122,6 @@ spec:
           - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
-          # Extrai o domain do system (assume format: system:default/domain-name)
           domain: ${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}
           repo_name: rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}
           description: ${{ parameters.description }}
