@@ -6,7 +6,7 @@
 
 A Backstage scaffolder template for generating modern Node.js Express APIs with OpenAPI/Swagger documentation and Backstage catalog integration.
 
-## 🎯 Purpose
+## Purpose
 
 This template streamlines the creation of standardized Node.js Express APIs within your organization, complete with:
 - OpenAPI/Swagger documentation
@@ -14,7 +14,7 @@ This template streamlines the creation of standardized Node.js Express APIs with
 - Basic health and monitoring endpoints
 - Professional project structure
 
-## 🚀 Features
+## Features
 
 - **Express API Boilerplate**: Production-ready Express.js setup
 - **API Documentation**: Swagger UI at `/docs` endpoint
@@ -27,14 +27,14 @@ This template streamlines the creation of standardized Node.js Express APIs with
   - API catalog-info with OpenAPI spec
   - Auto-registration in Backstage catalog
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Runtime**: Node.js (≥18)
 - **Framework**: Express.js
 - **Documentation**: OpenAPI/Swagger
 - **Catalog**: Backstage Software Templates
 
-## 📦 Importing the Template
+## Importing the Template
 
 1. Clone this repository into your Backstage project:
    ```bash
@@ -53,7 +53,7 @@ This template streamlines the creation of standardized Node.js Express APIs with
 
 3. Restart your Backstage instance to load the template.
 
-## 🔨 Using the Template
+## Using the Template
 
 1. Navigate to your Backstage's Software Templates
 2. Select "Node.js Express API with Swagger"
@@ -77,7 +77,7 @@ port: 3000
 repoUrl: bancorocks/user-service-api
 ```
 
-## 🏗️ Generated Project Structure
+## Generated Project Structure
 
 ```
 my-api/
@@ -94,7 +94,7 @@ my-api/
 └── README.md
 ```
 
-## 👥 Responsible Team
+## Responsible Team
 
 This template is maintained by the Platform Team at bancorocks. For questions, issues, or suggestions:
 
@@ -102,10 +102,6 @@ This template is maintained by the Platform Team at bancorocks. For questions, i
 - **Team**: Platform Team
 - **Organization**: bancorocks
 
-## 📄 License
+## License
 
 MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Made with ❤️ by the Platform Team @ bancorocks
