@@ -6,15 +6,43 @@ metadata:
   annotations:
     github.com/project-slug: bancorocks/${{ values.repo_name }}
     backstage.io/techdocs-ref: dir:.
+    backstage.io/source-location: url:https://github.com/bancorocks/${{ values.repo_name }}
   tags:
     - nodejs
     - express
     - api
     - ${{ values.domain }}
+    - bancorocks
+  links:
+    - url: https://github.com/bancorocks/${{ values.repo_name }}
+      title: Repository
+      icon: github
+    - url: http://localhost:${{ values.port }}/api-docs
+      title: API Documentation
+      icon: docs
 spec:
   type: service
   lifecycle: ${{ values.lifecycle }}
   owner: ${{ values.owner }}
   system: ${{ values.system }}
   providesApis:
-    - ${{ values.component_id }}-api
+    - ${{ values.component_id }}-openapi
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: ${{ values.component_id }}-openapi
+  description: OpenAPI spec for ${{ values.component_id }}
+  annotations:
+    github.com/project-slug: bancorocks/${{ values.repo_name }}
+  tags:
+    - openapi
+    - rest
+    - ${{ values.domain }}
+spec:
+  type: openapi
+  lifecycle: ${{ values.lifecycle }}
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}
+  definition:
+    $text: ./src/docs/openapi.yaml
