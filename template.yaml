@@ -24,7 +24,6 @@ spec:
         - system
         - lifecycle
       properties:
-        component_id:
           title: Component Name
           type: string
           description: Name of the component (will be used in repository name)
@@ -67,19 +66,44 @@ spec:
           type: number
           description: Port to run the API on
           default: 3000
+        component_id:
           minimum: 3000
           maximum: 9999
     - title: Repository Preview
-      description: 'Repository will be created as: rocks.{extracted-domain}-${{ parameters.component_id }}'
+      description: 'Review how your repository will be created'
       properties:
         repoPreview:
-          title: Generated Repository Name
+          title: Repository Details Preview
           type: string
-          description: 'This will be generated automatically based on your system and component name'
+          description: |
+            **Repository Name:** `rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+            
+            **Full URL:** `https://github.com/bancorocks/rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+            
+            **Clone URL:** `git clone https://github.com/bancorocks/rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}.git`
+            
+            **Package Name:** `rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+            
+            **Component ID:** `${{ parameters.component_id }}`
+            
+            **Domain:** `${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}`
+            
+            **Owner:** `${{ parameters.owner }}`
+            
+            **System:** `${{ parameters.system }}`
+            
+            **Lifecycle:** `${{ parameters.lifecycle }}`
+            
+            **Port:** `${{ parameters.port }}`
           ui:widget: textarea
           ui:options:
-            rows: 2
+            rows: 12
           ui:readonly: true
+        confirmCreation:
+          title: Confirm Repository Creation
+          type: boolean
+          description: 'I confirm that the repository details above are correct and I want to proceed with creation'
+          default: false
   steps:
     - id: extract-domain
       name: Extract Domain from System
