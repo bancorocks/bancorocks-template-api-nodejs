@@ -104,7 +104,6 @@ spec:
         description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
-        deleteBranchOnMerge: true
         gitCommitMessage: 'feat: initial project setup from backstage template'
 
         
