@@ -25,9 +25,9 @@ spec:
         - lifecycle
       properties:
         component_id:
-          title: Name
+          title: Component Name
           type: string
-          description: Unique name of the component (lowercase, no spaces)
+          description: Name of the component (will be used in repository name)
           pattern: '^[a-z0-9-]+$'
           ui:field: EntityNamePicker
           ui:help: 'Use lowercase letters, numbers and dashes only'
@@ -47,11 +47,12 @@ spec:
         system:
           title: System
           type: string
-          description: System this API belongs to
+          description: System this API belongs to (domain will be extracted from system name)
           ui:field: EntityPicker
           ui:options:
             allowedKinds:
               - System
+          ui:help: 'Repository will be named: rocks.{system-domain}-{component-name}'
         lifecycle:
           title: Lifecycle
           type: string
@@ -68,44 +69,54 @@ spec:
           default: 3000
           minimum: 3000
           maximum: 9999
-    - title: Choose a location
-      required:
-        - repoUrl
+    - title: Repository Preview
+      description: 'Repository will be created as: rocks.{extracted-domain}-${{ parameters.component_id }}'
       properties:
-        repoUrl:
-          title: Repository Location
+        repoPreview:
+          title: Generated Repository Name
           type: string
-          ui:field: RepoUrlPicker
+          description: 'This will be generated automatically based on your system and component name'
+          ui:widget: textarea
           ui:options:
-            allowedHosts:
-              - github.com
-            allowedOwners:
-              - bancorocks
+            rows: 2
+          ui:readonly: true
   steps:
+    - id: extract-domain
+      name: Extract Domain from System
+      action: debug:log
+      input:
+        message: 'System selected: ${{ parameters.system }}, Component: ${{ parameters.component_id }}'
+        
     - id: fetch-base
       name: Fetch Base Template
       action: fetch:template
       input:
         url: ./skeleton
+        copyWithoutTemplating:
+          - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
+          # Extrai o domain do system (assume format: system:default/domain-name)
+          domain: ${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}
+          repo_name: rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
           system: ${{ parameters.system }}
           lifecycle: ${{ parameters.lifecycle }}
           port: ${{ parameters.port }}
           organization: bancorocks
-          repoUrl: ${{ parameters.repoUrl }}
           
     - id: publish
       name: Publish to GitHub
       action: publish:github
       input:
         description: ${{ parameters.description }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: github.com?owner=bancorocks&repo=rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}
         defaultBranch: main
+        deleteBranchOnMerge: true
         gitCommitMessage: 'feat: initial project setup from backstage template'
-
+        gitAuthorName: Backstage Scaffolder
+        gitAuthorEmail: backstage@bancorocks.com
         
     - id: register
       name: Register in Software Catalog
@@ -123,12 +134,12 @@ spec:
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
     text:
-      - title: More information
+      - title: Repository Created
         content: |
-          **Your Node.js Express API has been created successfully!**
+          **Repository Name:** `rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
           
-          Next steps:
-          1. Clone the repository: `git clone ${{ steps.publish.output.remoteUrl }}`
-          2. Install dependencies: `npm install`
-          3. Start development: `npm run dev`
-          4. Access Swagger docs at: `http://localhost:${{ parameters.port }}/api-docs`
+          **Next steps:**
+          1. Clone: `git clone ${{ steps.publish.output.remoteUrl }}`
+          2. Install: `npm install`
+          3. Start: `npm run dev`
+          4. Swagger docs: `http://localhost:${{ parameters.port }}/api-docs`
