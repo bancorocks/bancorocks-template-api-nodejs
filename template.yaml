@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: template-api-nodejs
+  name: nodejs-express-api
   title: Node.js Express API with Swagger
   description: Create a Node.js Express API with Swagger documentation and Backstage integration
   tags:
@@ -11,10 +11,10 @@ metadata:
     - openapi
     - recommended
     - api
+    - bancorocks
 spec:
-  owner: platform-team
-  type: api
-
+  owner: group:platform-team
+  type: service
   parameters:
     - title: Provide API information
       required:
@@ -27,12 +27,15 @@ spec:
         component_id:
           title: Name
           type: string
-          description: Unique name of the component
+          description: Unique name of the component (lowercase, no spaces)
+          pattern: '^[a-z0-9-]+$'
           ui:field: EntityNamePicker
+          ui:help: 'Use lowercase letters, numbers and dashes only'
         description:
           title: Description
           type: string
           description: Help others understand what this API is for
+          minLength: 10
         owner:
           title: Owner
           type: string
@@ -57,26 +60,35 @@ spec:
           enum:
             - experimental
             - production
+            - deprecated
         port:
           title: Port
           type: number
           description: Port to run the API on
           default: 3000
+          minimum: 3000
+          maximum: 9999
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
         repoUrl:
-          title: Repository URL
+          title: Repository Location
           type: string
-          description: GitHub repository URL (e.g., bancorocks/my-api)
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
               - github.com
-
+            allowedOwners:
+              - bancorocks
   steps:
-    - id: template
-      name: Fetch Skeleton
+    - id: fetch-base
+      name: Fetch Base Template
       action: fetch:template
       input:
         url: ./skeleton
+        copyWithoutTemplating:
+          - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -84,8 +96,9 @@ spec:
           system: ${{ parameters.system }}
           lifecycle: ${{ parameters.lifecycle }}
           port: ${{ parameters.port }}
+          organization: bancorocks
           repoUrl: ${{ parameters.repoUrl }}
-
+          
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -93,19 +106,33 @@ spec:
         description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
-        gitCommitMessage: 'feat: generated initial project files'
-
+        deleteBranchOnMerge: true
+        gitCommitMessage: 'feat: initial project setup from backstage template'
+        gitAuthorName: Backstage Scaffolder
+        gitAuthorEmail: backstage@bancorocks.com
+        
     - id: register
-      name: Register API in Catalog
+      name: Register in Software Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
-
+        catalogInfoPath: '/catalog-info.yaml'
+        
   output:
     links:
       - title: Repository
         url: ${{ steps.publish.output.remoteUrl }}
+        icon: github
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
+    text:
+      - title: More information
+        content: |
+          **Your Node.js Express API has been created successfully!**
+          
+          Next steps:
+          1. Clone the repository: `git clone ${{ steps.publish.output.remoteUrl }}`
+          2. Install dependencies: `npm install`
+          3. Start development: `npm run dev`
+          4. Access Swagger docs at: `http://localhost:${{ parameters.port }}/api-docs`
