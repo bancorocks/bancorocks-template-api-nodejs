@@ -1,0 +1,110 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: template-api-nodejs
+  title: Node.js Express API with Swagger
+  description: Create a Node.js Express API with Swagger documentation and Backstage integration
+  tags:
+    - nodejs
+    - express
+    - swagger
+    - openapi
+    - recommended
+    - api
+spec:
+  owner: platform-team
+  type: api
+
+  parameters:
+    - title: Provide API information
+      required:
+        - component_id
+        - description
+        - owner
+        - system
+        - lifecycle
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this API is for
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds:
+              - Group
+        system:
+          title: System
+          type: string
+          description: System this API belongs to
+          ui:field: EntityPicker
+          ui:options:
+            allowedKinds:
+              - System
+        lifecycle:
+          title: Lifecycle
+          type: string
+          description: Application lifecycle
+          default: experimental
+          enum:
+            - experimental
+            - production
+        port:
+          title: Port
+          type: number
+          description: Port to run the API on
+          default: 3000
+        repoUrl:
+          title: Repository URL
+          type: string
+          description: GitHub repository URL (e.g., bancorocks/my-api)
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: template
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          lifecycle: ${{ parameters.lifecycle }}
+          port: ${{ parameters.port }}
+          repoUrl: ${{ parameters.repoUrl }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: ${{ parameters.description }}
+        repoUrl: ${{ parameters.repoUrl }}
+
+    - id: register
+      name: Register API in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}

@@ -1,0 +1,58 @@
+openapi: 3.0.3
+info:
+  title: ${{values.component_id}}
+  description: ${{values.description}}
+  version: 1.0.0
+servers:
+  - url: http://localhost:${{values.port}}
+    description: Local development server
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API
+      operationId: getHealth
+      tags:
+        - System
+      responses:
+        "200":
+          description: Health check response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  uptime:
+                    type: number
+                    example: 123.45
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2023-08-30T12:00:00Z"
+  /ping:
+    get:
+      summary: Ping endpoint
+      description: Simple ping-pong response for connectivity testing
+      operationId: getPing
+      tags:
+        - System
+      responses:
+        "200":
+          description: Ping response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: pong
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2023-08-30T12:00:00Z"
+components:
+  schemas: {}
