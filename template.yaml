@@ -87,8 +87,6 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        copyWithoutTemplating:
-          - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -108,8 +106,7 @@ spec:
         defaultBranch: main
         deleteBranchOnMerge: true
         gitCommitMessage: 'feat: initial project setup from backstage template'
-        gitAuthorName: Backstage Scaffolder
-        gitAuthorEmail: backstage@bancorocks.com
+
         
     - id: register
       name: Register in Software Catalog
