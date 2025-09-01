@@ -30,7 +30,7 @@ spec:
           description: Name of the component (will be used in repository name)
           pattern: '^[a-z0-9-]+$'
           ui:field: EntityNamePicker
-          ui:help: 'Use lowercase letters, numbers and dashes only'
+          ui:help: Use lowercase letters, numbers and dashes only
         description:
           title: Description
           type: string
@@ -47,12 +47,12 @@ spec:
         system:
           title: System
           type: string
-          description: System this API belongs to (domain will be extracted from system name)
+          description: System this API belongs to
           ui:field: EntityPicker
           ui:options:
             allowedKinds:
               - System
-          ui:help: 'Repository will be named: rocks.{system-domain}-{component-name}'
+          ui:help: Repository will be named bancorocks-{system-domain}-{component-name}
         lifecycle:
           title: Lifecycle
           type: string
@@ -69,46 +69,14 @@ spec:
           default: 3000
           minimum: 3000
           maximum: 9999
-    - title: Repository Preview
-      description: 'Review how your repository will be created based on your selections'
+    - title: Confirmation
       required:
         - confirmCreation
       properties:
-        repoPreview:
-          title: Repository Details
-          type: string
-          description: |
-            The repository will be created with the following structure:
-            
-            🏗️ **Naming Pattern:** rocks.{domain}-{component_id}
-            📁 **Organization:** bancorocks
-            🌐 **Base URL:** https://github.com/bancorocks/
-            
-            ⚙️ **How it works:**
-            - Domain is extracted from the selected System
-            - Component name becomes part of the repository name
-            - Final format: rocks.{extracted-domain}-{your-component-name}
-            
-            📝 **Examples:**
-            - System: "system:default/accounts" + Component: "user-api" = rocks.accounts-user-api
-            - System: "system:payments" + Component: "transaction-service" = rocks.payments-transaction-service
-            - System: "system:default/cards" + Component: "creditcard-api" = rocks.cards-creditcard-api
-            
-            🔧 **What will be created:**
-            - GitHub repository with standardized name
-            - README.md with component documentation
-            - package.json with proper naming
-            - Swagger/OpenAPI documentation
-            - Basic Express.js structure
-            - Backstage catalog-info.yaml
-          ui:widget: textarea
-          ui:options:
-            rows: 15
-          ui:readonly: true
         confirmCreation:
           title: Confirm Repository Creation
           type: boolean
-          description: 'I have reviewed the naming pattern above and want to proceed with repository creation'
+          description: I have reviewed the settings and want to proceed with repository creation
           default: false
   steps:
     - id: extract-domain
@@ -122,8 +90,6 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        copyWithoutTemplating:
-          - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
           domain: ${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}
@@ -140,7 +106,7 @@ spec:
       action: publish:github
       input:
         description: ${{ parameters.description }}
-        repoUrl: github.com?owner=bancorocks&repo=rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}
+        repoUrl: github.com?owner=bancorocks&repo=bancorocks-${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}
         defaultBranch: main
         deleteBranchOnMerge: true
         gitCommitMessage: 'feat: initial project setup from backstage template'
@@ -165,10 +131,10 @@ spec:
     text:
       - title: Repository Created
         content: |
-          **Repository Name:** `rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}`
+          Repository Name: rocks.${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id }}
           
-          **Next steps:**
-          1. Clone: `git clone ${{ steps.publish.output.remoteUrl }}`
-          2. Install: `npm install`
-          3. Start: `npm run dev`
-          4. Swagger docs: `http://localhost:${{ parameters.port }}/api-docs`
+          Next steps:
+          1. Clone: git clone ${{ steps.publish.output.remoteUrl }}
+          2. Install: npm install
+          3. Start: npm run dev
+          4. Swagger docs: http://localhost:${{ parameters.port }}/docs
