@@ -6,7 +6,6 @@ metadata:
   description: ${{ values.description }}
   annotations:
     github.com/project-slug: bancorocks/${{ values.repo_name }}
-    backstage.io/techdocs-ref: dir:.
     backstage.io/source-location: url:https://github.com/bancorocks/${{ values.repo_name }}
   tags:
     - nodejs
@@ -18,7 +17,7 @@ metadata:
     - url: https://github.com/bancorocks/${{ values.repo_name }}
       title: Repository
       icon: github
-    - url: http://localhost:${{ values.port }}/api-docs
+    - url: http://localhost:${{ values.port }}/docs
       title: API Documentation
       icon: docs
 spec:
