@@ -83,7 +83,7 @@ spec:
         url: ./skeleton
         values:
           component_id: ${{ parameters.component_id }}
-          domain: ${{ parameters.system | replace('system:default/', '') | replace('system:', '') | replace('system', '') }}
+          domain: ${{ parameters.system | replace('system:default/', '') | replace('system:', '') | replace('-system', '') }}
           repo_name: bancorocks-${{ parameters.system | replace('system:default/', '') | replace('system:', '') }}-${{ parameters.component_id  }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
@@ -97,7 +97,7 @@ spec:
       action: publish:github
       input:
         description: ${{ parameters.description }}
-        repoUrl: github.com?owner=bancorocks&repo=bancorocks-${{ parameters.system | replaceMultiple(['system:', 'default/', '-system'], '') }}-${{ parameters.component_id }}
+        repoUrl: github.com?owner=bancorocks&repo=bancorocks-${{ parameters.system | replace('system:default/', '') | replace('system:', '') | replace('-system', '') }}-${{ parameters.component_id }}
         defaultBranch: main
         gitCommitMessage: "feat: initial project setup from rockstage template"
         gitAuthorName: Backstage Scaffolder
@@ -121,7 +121,7 @@ spec:
     text:
       - title: Repository Created
         content: |
-          Repository Name: bancorocks-${{ parameters.system | replaceMultiple(['system:', 'default/', '-system'], '') }}-${{ parameters.component_id }}
+          Repository Name: bancorocks-${{ parameters.system | replace('system:default/', '') | replace('system:', '') | replace('-system', '') }}-${{ parameters.component_id }}
 
           Next steps:
           1. Clone: git clone ${{ steps.publish.output.remoteUrl }}
