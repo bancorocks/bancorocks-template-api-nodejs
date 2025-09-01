@@ -125,6 +125,6 @@ spec:
 
           Next steps:
           1. Clone: git clone ${{ steps.publish.output.remoteUrl }}
-          2. Install: npm install
-          3. Start: npm run dev
+          2. Install: yarn install
+          3. Start: yarn dev
           4. Swagger docs: http://localhost:${{ parameters.port }}/docs
