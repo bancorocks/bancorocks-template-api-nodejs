@@ -32,13 +32,6 @@ The server will start on port ${{values.port}}.
 - Health Check: GET /health
 - Ping: GET /ping
 
-## Testing
-
-Run the test suite:
-```bash
-npm test
-```
-
 ## Owner
 
 ${{values.owner}}
