@@ -18,14 +18,14 @@ This API was generated using the Node.js Express with Swagger template.
 
    For development with auto-reload:
    ```bash
-  yarn dev
+   yarn dev
    ```
 
 The server will start on port ${{values.port}}.
 
 ## API Documentation
 
-- Swagger UI: http://localhost:${{values.port}}/docs
+- Swagger UI: `http://localhost:${{values.port}}/docs`
 
 ## Available Endpoints
 
