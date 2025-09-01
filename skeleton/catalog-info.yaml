@@ -45,4 +45,4 @@ spec:
   owner: ${{ values.owner }}
   system: ${{ values.system }}
   definition:
-    $text: ./src/docs/openapi.yaml
+    $text: ./src/openapi.yaml

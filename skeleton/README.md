@@ -8,17 +8,17 @@ This API was generated using the Node.js Express with Swagger template.
 
 1. Install dependencies:
    ```bash
-   npm install
+   yarn install
    ```
 
 2. Start the server:
    ```bash
-   npm start
+   yarn start
    ```
 
    For development with auto-reload:
    ```bash
-   npm run dev
+  yarn dev
    ```
 
 The server will start on port ${{values.port}}.

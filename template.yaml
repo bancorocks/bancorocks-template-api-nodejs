@@ -28,7 +28,7 @@ spec:
           title: Component Name
           type: string
           description: Name of the component (will be used in repository name)
-          pattern: '^[a-z0-9-]+$'
+          pattern: "^[a-z0-9-]+$"
           ui:field: EntityNamePicker
           ui:help: Use lowercase letters, numbers and dashes only
         description:
@@ -74,8 +74,8 @@ spec:
       name: Extract Domain from System
       action: debug:log
       input:
-        message: 'System selected: ${{ parameters.system }}, Component: ${{ parameters.component_id }}'
-        
+        message: "System selected: ${{ parameters.system }}, Component: ${{ parameters.component_id }}"
+
     - id: fetch-base
       name: Fetch Base Template
       action: fetch:template
@@ -91,7 +91,7 @@ spec:
           lifecycle: ${{ parameters.lifecycle }}
           port: ${{ parameters.port }}
           organization: bancorocks
-          
+
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -99,17 +99,17 @@ spec:
         description: ${{ parameters.description }}
         repoUrl: github.com?owner=bancorocks&repo=bancorocks-${{ parameters.system | replaceMultiple(['system:', 'default/', '-system'], '') }}-${{ parameters.component_id }}
         defaultBranch: main
-        gitCommitMessage: 'feat: initial project setup from rockstage template'
+        gitCommitMessage: "feat: initial project setup from rockstage template"
         gitAuthorName: Backstage Scaffolder
         gitAuthorEmail: backstage@bancorocks.com
-        
+
     - id: register
       name: Register in Software Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
-        
+        catalogInfoPath: "/catalog-info.yaml"
+
   output:
     links:
       - title: Repository
@@ -122,7 +122,7 @@ spec:
       - title: Repository Created
         content: |
           Repository Name: bancorocks-${{ parameters.system | replaceMultiple(['system:', 'default/', '-system'], '') }}-${{ parameters.component_id }}
-          
+
           Next steps:
           1. Clone: git clone ${{ steps.publish.output.remoteUrl }}
           2. Install: npm install

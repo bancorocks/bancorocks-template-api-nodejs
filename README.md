@@ -85,9 +85,7 @@ my-api/
 │   ├── routes/
 │   │   ├── health.js
 │   │   └── ping.js
-│   ├── docs/
-│   │   ├── openapi.yaml
-│   │   └── catalog-info.yaml
+│   ├── openapi.yaml
 │   └── index.js
 ├── catalog-info.yaml
 ├── package.json
@@ -98,10 +96,6 @@ my-api/
 
 This template is maintained by the Platform Team at bancorocks. For questions, issues, or suggestions:
 
-- **GitHub**: [bancorocks/rocks.template-api-nodejs](https://github.com/bancorocks/rocks.template-api-nodejs)
+- **GitHub**: [bancorocks/bancorocks-template-api-nodejs](https://github.com/bancorocks/bancorocks-template-api-nodejs)
 - **Team**: Platform Team
 - **Organization**: bancorocks
-
-## License
-
-MIT License - see the [LICENSE](LICENSE) file for details.
