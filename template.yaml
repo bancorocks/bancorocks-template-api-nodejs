@@ -69,15 +69,6 @@ spec:
           default: 3000
           minimum: 3000
           maximum: 9999
-    - title: Confirmation
-      required:
-        - confirmCreation
-      properties:
-        confirmCreation:
-          title: Confirm Repository Creation
-          type: boolean
-          description: I have reviewed the settings and want to proceed with repository creation
-          default: false
   steps:
     - id: extract-domain
       name: Extract Domain from System
