@@ -52,7 +52,7 @@ spec:
           ui:options:
             allowedKinds:
               - System
-          ui:help: Repository will be named bancorocks-{system-domain}-{component-name}
+          ui:help: Repository will be named bancorocks-{system}-{component-name}
         lifecycle:
           title: Lifecycle
           type: string
